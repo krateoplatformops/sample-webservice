@@ -1,0 +1,12 @@
+builds:
+- id: sample-webservice
+  #main: main.go
+  dir: . 
+  env:
+  ldflags:
+  - -s -w
+  - -extldflags "-static"
+defaultPlatforms:
+- linux/arm64
+- linux/amd64
+defaultBaseImage: golang:1.24-bookworm

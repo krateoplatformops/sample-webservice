@@ -1,0 +1,109 @@
+basePath: /
+definitions:
+  handlers.Resource:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    type: object
+  resources.ListResponse:
+    properties:
+      count:
+        type: integer
+      resources:
+        items:
+          $ref: '#/definitions/handlers.Resource'
+        type: array
+    type: object
+info:
+  contact: {}
+  description: Sample Webservice API.
+  title: Sample Webservice API
+  version: "1.0"
+paths:
+  /resource:
+    delete:
+      description: Delete a resource. It returns 204 No Content if the resource is
+        deleted successfully.
+      operationId: delete-resource
+      parameters:
+      - description: Name of the resource
+        in: query
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      summary: Sample API DELETE hardcoded resource.
+    get:
+      description: Get a hardcoded resource
+      operationId: get-resource
+      parameters:
+      - description: Name of the resource
+        in: query
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/handlers.Resource'
+            type: array
+      summary: Sample API GET hardcoded resource
+    patch:
+      description: Patch a resource. It returns 200 OK if the resource is updated
+        successfully.
+      operationId: patch-resource
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/handlers.Resource'
+            type: array
+      summary: Sample API PATCH hardcoded resource.
+    post:
+      description: Create a resource. It returns 201 Created if the resource is created
+        successfully.
+      operationId: create-resource
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            items:
+              $ref: '#/definitions/handlers.Resource'
+            type: array
+      summary: Sample API GET hardcoded resource.
+  /resources:
+    get:
+      description: List hardcoded resources
+      operationId: list-resource
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/resources.ListResponse'
+            type: array
+      summary: Sample API GET list hardcoded resources
+securityDefinitions:
+  BearerAuth:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

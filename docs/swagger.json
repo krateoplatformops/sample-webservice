@@ -1,0 +1,158 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Sample Webservice API.",
+        "title": "Sample Webservice API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "basePath": "/",
+    "paths": {
+        "/resource": {
+            "get": {
+                "description": "Get a hardcoded resource",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Sample API GET hardcoded resource",
+                "operationId": "get-resource",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Name of the resource",
+                        "name": "name",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/handlers.Resource"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a resource. It returns 201 Created if the resource is created successfully.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Sample API GET hardcoded resource.",
+                "operationId": "create-resource",
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/handlers.Resource"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a resource. It returns 204 No Content if the resource is deleted successfully.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Sample API DELETE hardcoded resource.",
+                "operationId": "delete-resource",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Name of the resource",
+                        "name": "name",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                }
+            },
+            "patch": {
+                "description": "Patch a resource. It returns 200 OK if the resource is updated successfully.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Sample API PATCH hardcoded resource.",
+                "operationId": "patch-resource",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/handlers.Resource"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/resources": {
+            "get": {
+                "description": "List hardcoded resources",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Sample API GET list hardcoded resources",
+                "operationId": "list-resource",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/resources.ListResponse"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "handlers.Resource": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "resources.ListResponse": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "resources": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/handlers.Resource"
+                    }
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "description": "Type \"Bearer\" followed by a space and JWT token.",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
