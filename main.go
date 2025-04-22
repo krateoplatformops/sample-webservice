@@ -65,7 +65,8 @@ func main() {
 	log = log.With("service", serviceName)
 
 	opts := handlers.HandlerOptions{
-		Log: log,
+		Log:           log,
+		ResourceStore: &[]handlers.Resource{},
 	}
 
 	healthy := int32(0)

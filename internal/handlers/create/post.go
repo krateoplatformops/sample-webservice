@@ -3,6 +3,7 @@ package resources
 import (
 	"encoding/json"
 	"net/http"
+	"slices"
 
 	"github.com/krateoplatformops/sample-webservice/internal/handlers"
 )
@@ -23,7 +24,9 @@ var _ http.Handler = (*handler)(nil)
 // @Description Create a resource. It returns 201 Created if the resource is created successfully.
 // @ID create-resource
 // @Produce json
-// @Success 201 {object} []handlers.Resource
+// @Accept json
+// @Param resource body handlers.Resource true "Resource to create"
+// @Success 201 {object} handlers.Resource
 // @Router /resource [post]
 func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// Get the request body
@@ -54,14 +57,30 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	// Log the resource creation
 	h.Log.Info("Creating resource", "name", resource.Name, "description", resource.Description)
-	// Simulate resource creation
-	// In a real application, you would save the resource to a database or perform some other action here.
-	// For this example, we'll just log the resource creation and return a success response.
-	w.WriteHeader(http.StatusCreated)
-	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(resource); err != nil {
-		h.Log.Error("Failed to encode response", "error", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+
+	index := slices.IndexFunc(*h.ResourceStore, func(r handlers.Resource) bool {
+		return r.Name == resource.Name
+	})
+
+	if index == -1 {
+		// Simulate resource creation
+		// In a real application, you would save the resource to a database or perform some other action here.
+		// For this example, we'll just log the resource creation and return a success response.
+		*h.ResourceStore = append(*h.ResourceStore, resource)
+
+		w.WriteHeader(http.StatusCreated)
+		w.Header().Set("Content-Type", "application/json")
+		if err := json.NewEncoder(w).Encode(resource); err != nil {
+			h.Log.Error("Failed to encode response", "error", err)
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+	}
+
+	// If the resource already exists, return a 409 Conflict status code
+	if index != -1 {
+		h.Log.Info("Resource already exists", "name", resource.Name)
+		http.Error(w, "Conflict", http.StatusConflict)
 		return
 	}
 }

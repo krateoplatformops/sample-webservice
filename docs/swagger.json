@@ -39,19 +39,30 @@
             },
             "post": {
                 "description": "Create a resource. It returns 201 Created if the resource is created successfully.",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "summary": "Sample API GET hardcoded resource.",
                 "operationId": "create-resource",
+                "parameters": [
+                    {
+                        "description": "Resource to create",
+                        "name": "resource",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.Resource"
+                        }
+                    }
+                ],
                 "responses": {
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/handlers.Resource"
-                            }
+                            "$ref": "#/definitions/handlers.Resource"
                         }
                     }
                 }

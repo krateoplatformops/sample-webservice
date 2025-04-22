@@ -73,18 +73,25 @@ paths:
             type: array
       summary: Sample API PATCH hardcoded resource.
     post:
+      consumes:
+      - application/json
       description: Create a resource. It returns 201 Created if the resource is created
         successfully.
       operationId: create-resource
+      parameters:
+      - description: Resource to create
+        in: body
+        name: resource
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.Resource'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            items:
-              $ref: '#/definitions/handlers.Resource'
-            type: array
+            $ref: '#/definitions/handlers.Resource'
       summary: Sample API GET hardcoded resource.
   /resources:
     get:

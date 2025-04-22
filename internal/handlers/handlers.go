@@ -5,7 +5,8 @@ import (
 )
 
 type HandlerOptions struct {
-	Log *slog.Logger
+	ResourceStore *[]Resource
+	Log           *slog.Logger
 }
 
 type Resource struct {

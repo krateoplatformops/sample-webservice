@@ -3,6 +3,7 @@ package resources
 import (
 	"encoding/json"
 	"net/http"
+	"slices"
 
 	"github.com/krateoplatformops/sample-webservice/internal/handlers"
 )
@@ -54,9 +55,20 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	// Log the resource creation
 	h.Log.Info("Pathing resource", "name", resource.Name, "description", resource.Description)
-	// Simulate resource creation
-	// In a real application, you would save the resource to a database or perform some other action here.
-	// For this example, we'll just log the resource creation and return a success response.
+
+	index := slices.IndexFunc(*h.ResourceStore, func(r handlers.Resource) bool {
+		return r.Name == resource.Name
+	})
+
+	if index == -1 {
+		h.Log.Error("Resource not found", "name", resource.Name)
+		http.Error(w, "", http.StatusNotFound)
+		return
+	}
+
+	res := *h.ResourceStore
+	res[index] = resource
+
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(resource); err != nil {

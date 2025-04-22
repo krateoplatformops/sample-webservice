@@ -32,15 +32,21 @@ paths:
       summary: Sample API GET hardcoded resource.
       description: Create a resource. It returns 201 Created if the resource is created successfully.
       operationId: create-resource
+      requestBody:
+        description: Resource to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/handlers.Resource'
+        required: true
       responses:
         "201":
           description: Created
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/handlers.Resource'
+                $ref: '#/components/schemas/handlers.Resource'
+      x-codegen-request-body-name: resource
     delete:
       summary: Sample API DELETE hardcoded resource.
       description: Delete a resource. It returns 204 No Content if the resource is deleted successfully.

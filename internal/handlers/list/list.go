@@ -37,19 +37,9 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// Set the content type to JSON
 	w.Header().Set("Content-Type", "application/json")
 
-	// Create a list response
 	response := ListResponse{
-		Resources: []handlers.Resource{
-			{
-				Name:        "Resource 1",
-				Description: "This is the first sample resource",
-			},
-			{
-				Name:        "Resource 2",
-				Description: "This is the second sample resource",
-			},
-		},
-		Count: 1,
+		Resources: *h.ResourceStore,
+		Count:     len(*h.ResourceStore),
 	}
 
 	h.Log.Info("List response", "resources", response.Resources, "count", response.Count)
